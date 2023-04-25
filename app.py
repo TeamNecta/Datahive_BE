@@ -121,13 +121,15 @@ def advance_cleaning():
     json_string = json.dumps(dataType)
     dfJSON = df.to_json()
     return jsonify(
-        {
-            "data": dfJSON,
-            "dataType": json_string,
-            "cols": cols,
-            "columns": list(df.columns),
-        }
-    )
+            {
+                "data": dfJSON,
+                "dataType": json_string,
+                "cols": cols,
+                "columns": list(df.columns),
+                "table": df.to_html(),
+                "datatype_table": df.dtypes.to_frame().to_html()
+            }
+        )
 
 
 @app.route("/visualization", methods=["GET", "POST"])
