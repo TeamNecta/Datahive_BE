@@ -40,7 +40,7 @@ def upload():
         # JSONP_data = jsonify(df_list)
         
         # return jsonify({ 'data':JSONP_data, 'dataType':dataType.transpose().to_dict() , 'cols':cols, 'columns':list(df.columns) })
-        return render_template('advance_cleaning.html', data=df, dataType=dataType.transpose(), cols=cols ,columns=list(df.columns), clean_message=clean_message)
+        return render_template('advance_cleaning.html', data=df, dataType=dataType.transpose(), cols=cols ,columns=list(df.columns))
 
 @app.route('/advance_cleaning', methods=['GET', 'POST'])
 def advance_cleaning():
@@ -95,7 +95,7 @@ def advance_cleaning():
 
 @app.route('/visualization', methods=['GET', 'POST'])
 def visualization():
-    return render_template
+    return render_template()
 
 
 if __name__ == '__main__':
