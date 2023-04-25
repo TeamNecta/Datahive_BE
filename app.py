@@ -73,7 +73,6 @@ def upload():
 
 @app.route("/advance_cleaning", methods=["GET", "POST"])
 def advance_cleaning():
-    clean_message = None
     if request.method == "POST":
         df_json = request.form["data"]
         df = pd.read_json(df_json)
@@ -145,7 +144,7 @@ def visualization():
 def analysis():
     df_json = request.form["data"]
     df = pd.read_json(df_json)
-    dict = {}
+    _dict = {}
     if request.method == "POST":
         if request.form["action"] == "check_correlation":
             col = request.form.get("target_column")
@@ -153,7 +152,7 @@ def analysis():
             numeric_cols.remove(col)
             for keys in numeric_cols:
                 pearson_coef, p_value = stats.pearsonr(df[keys], df[col])
-                dict[keys] = [pearson_coef, p_value]
+                _dict[keys] = [pearson_coef, p_value]
 
         elif request.form["action"] == "SLR":
             lm = LinearRegression()
@@ -203,14 +202,14 @@ def analysis():
             )
             plt.show()
 
-    return render_template("analysis.html", data=df, cols=list(df.columns), dict=dict)
-    # return jsonify(
-    #         {
-    #             "data": df.to_json(),
-    #             # "dataType": dataType.transpose().to_json(),
-    #             "columns": list(df.columns),
-    #         }
-    #     )
+    # return render_template("analysis.html", data=df, cols=list(df.columns), dict=_dict)
+    return jsonify(
+            {
+                "data": df.to_json(),
+                # "dataType": dataType.transpose().to_json(),
+                "columns": list(df.columns),
+            }
+        )
 
 
 if __name__ == "__main__":
