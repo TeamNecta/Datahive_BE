@@ -8,7 +8,6 @@ import seaborn as sns
 from scipy import stats
 from sklearn.metrics import mean_squared_error
 from flask_cors import CORS
-from sklearn.model_selection import train_test_split
 
 app = Flask(__name__)
 app.secret_key = "mysecretkey"
