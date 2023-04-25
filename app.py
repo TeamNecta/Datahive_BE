@@ -97,20 +97,51 @@ def advance_cleaning():
     cols = list(miss_data.index)
     dataType = df.dtypes
     dataType = dataType.to_frame()
-    return render_template(
-        "advance_cleaning.html",
-        data=df,
-        # dataType=dataType.transpose(),
-        cols=cols,
-        columns=list(df.columns),
-        clean_message=clean_message,
-    )
+    # return render_template(
+    #     "advance_cleaning.html",
+    #     data=df,
+    #     # dataType=dataType.transpose(),
+    #     cols=cols,
+    #     columns=list(df.columns),
+    #     clean_message=clean_message,
+    # )
+    return jsonify(
+            {
+                "data": df.to_json(),
+                # "dataType": dataType.transpose().to_json(),
+                "cols": cols,
+                "columns": list(df.columns),
+            }
+        )
 
 
 @app.route("/visualization", methods=["GET", "POST"])
 def visualization():
-    return render_template
+    return render_template('visualize.html')
 
+@app.route('/analysis', methods=['GET', 'POST'])
+def analysis():
+    global df
+    clean_message = None
+    if request.method == "POST":
+        if request.form["action"] == "correlation":
+            columns = request.form.getlist("target_column")
+        # elif request.method["action"] == "":
+
+
+    # return render_template(
+    #     "analysis.html",
+    #     data=df,
+    #     # dataType=dataType.transpose(),
+    #     cols=list(df.columns),
+    # )
+    return jsonify(
+            {
+                "data": df.to_json(),
+                # "dataType": dataType.transpose().to_json(),
+                "columns": list(df.columns),
+            }
+        )
 
 if __name__ == "__main__":
     app.run(debug=True)
