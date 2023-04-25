@@ -7,10 +7,8 @@ import seaborn as sns
 from scipy import stats
 from sklearn.metrics import mean_squared_error
 
-
 app = Flask(__name__)
 app.secret_key = "mysecretkey"
-
 
 @app.route("/")
 def home():
@@ -41,24 +39,24 @@ def upload():
         miss_data.columns = ["No of Missing Values"]
         cols = list(miss_data.index)
         dataType = df.dtypes
-        dataType = dataType.to_frame()
+        # dataType = dataType.to_frame()
 
-        # return jsonify(
-        #     {
-        #         "data": df.to_json(),
-        #         # "dataType": dataType.transpose().to_json(),
-        #         "cols": cols,
-        #         "columns": list(df.columns),
-        #     }
-        # )
-
-        return render_template(
-            "advance_cleaning.html",
-            data=df,
-            dataType=dataType.transpose(),
-            cols=cols,
-            columns=list(df.columns),
+        return jsonify(
+            {
+                "data": df.to_json(),
+                "dataType": dataType.to_json(),
+                "cols": cols,
+                "columns": list(df.columns),
+            }
         )
+
+        # return render_template(
+        #     "advance_cleaning.html",
+        #     data=df,
+        #     dataType=dataType.transpose(),
+        #     cols=cols,
+        #     columns=list(df.columns),
+        # )
     return {}
 
 

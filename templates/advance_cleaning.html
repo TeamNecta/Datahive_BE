@@ -33,7 +33,7 @@
 
     <h2>Change Data Type:</h2>
     <h2>Data Type of Attributes</h2>
-    {{ dataType.to_html()|safe }}
+    {{ dataType.transpose().to_html()|safe }}
     <label>Select Column:</label>
     <select name="column">
       {% for col in columns %}
