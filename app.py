@@ -81,18 +81,17 @@ def advance_cleaning():
         df_json = request.form["data"]
         df = pd.read_json(df_json)
         if request.form["action"] == "replace_missing":
-            columns = request.form["replace_column"]
+            col = request.form["replace_column"]
             method = request.form["replace_method"]
-            for col in columns:
-                if method == "mean":
-                    avg = df[col].astype("float").mean(axis=0)
-                    df[col].replace(np.NaN, avg, inplace=True)
-                elif method == "freq":
-                    freq = df[col].value_counts().idxmax()
-                    df[col].replace(np.NaN, freq, inplace=True)
-                elif method == "deleteRow":
-                    df.dropna(subset=[columns[0]], axis=0, inplace=True)
-                    df.reset_index(drop=True, inplace=True)
+            if method == "mean":
+                avg = df[col].astype("float").mean(axis=0)
+                df[col].replace(np.NaN, avg, inplace=True)
+            elif method == "freq":
+                freq = df[col].value_counts().idxmax()
+                df[col].replace(np.NaN, freq, inplace=True)
+            elif method == "deleteRow":
+                df.dropna(subset=[col[0]], axis=0, inplace=True)
+                df.reset_index(drop=True, inplace=True)
 
         elif request.form["action"] == "change_datatype":
             column = request.form.getlist("column")
