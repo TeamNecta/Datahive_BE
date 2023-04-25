@@ -32,7 +32,6 @@ def home():
 def upload():
     if request.method == "POST":
         file = request.files["file"]
-        global df
         df = pd.read_csv(file)
 
         # Replace '?' and '' with NaN
@@ -60,6 +59,8 @@ def upload():
                 "dataType": json_string,
                 "cols": cols,
                 "columns": list(df.columns),
+                "table": df.to_html(),
+                "filename": file.filename,
             }
         )
 
