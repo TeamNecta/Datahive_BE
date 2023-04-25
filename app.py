@@ -11,7 +11,14 @@ from flask_cors import CORS
 app = Flask(__name__)
 app.secret_key = "mysecretkey"
 
-CORS(app, origins=["http://localhost:3000", "https://datahive.rabil.me", "https://datahive.pages.dev"])
+CORS(
+    app,
+    origins=[
+        "http://localhost:3000",
+        "https://datahive.rabil.me",
+        "https://datahive.pages.dev",
+    ],
+)
 
 
 @app.route("/")
@@ -120,13 +127,13 @@ def advance_cleaning():
     #     clean_message=clean_message,
     # )
     return jsonify(
-            {
-                "data": df.to_json(),
-                # "dataType": dataType.transpose().to_json(),
-                "cols": cols,
-                "columns": list(df.columns),
-            }
-        )
+        {
+            "data": df.to_json(),
+            # "dataType": dataType.transpose().to_json(),
+            "cols": cols,
+            "columns": list(df.columns),
+        }
+    )
 
 
 @app.route("/visualization", methods=["GET", "POST"])
@@ -136,7 +143,8 @@ def visualization():
 
 @app.route("/analysis", methods=["GET", "POST"])
 def analysis():
-    global df
+    df_json = request.form["data"]
+    df = pd.read_json(df_json)
     dict = {}
     if request.method == "POST":
         if request.form["action"] == "check_correlation":
