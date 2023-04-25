@@ -11,7 +11,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 app.secret_key = "mysecretkey"
 
-CORS(app, origins=["http://localhost:3000", "https://datahive.rabil.me"])
+CORS(app, origins=["http://localhost:3000", "https://datahive.rabil.me", "https://datahive.pages.dev"])
 
 
 @app.route("/")
