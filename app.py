@@ -59,6 +59,7 @@ def upload():
                 "cols": cols,
                 "columns": list(df.columns),
                 "table": df.to_html(),
+                "filename": file.filename,
             }
         )
 
