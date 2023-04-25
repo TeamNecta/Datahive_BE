@@ -59,6 +59,7 @@ def upload():
             cols=cols,
             columns=list(df.columns),
         )
+    return {}
 
 
 @app.route("/advance_cleaning", methods=["GET", "POST"])
