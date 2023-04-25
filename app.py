@@ -66,9 +66,10 @@ def upload():
 
 @app.route("/advance_cleaning", methods=["GET", "POST"])
 def advance_cleaning():
-    global df
     clean_message = None
     if request.method == "POST":
+        df_json = request.form["data"]
+        df = pd.read_json(df_json)
         if request.form["action"] == "replace_missing":
             columns = request.form.getlist("replace_column")
             method = request.form["replace_method"]
@@ -82,20 +83,17 @@ def advance_cleaning():
                 elif method == "deleteRow":
                     df.dropna(subset=[columns[0]], axis=0, inplace=True)
                     df.reset_index(drop=True, inplace=True)
-            clean_message = "Missing values replaced successfully!"
 
         elif request.form["action"] == "change_datatype":
             column = request.form.getlist("column")
             datatype = request.form["datatype"]
             for col in column:
                 df[col] = df[col].astype(datatype)
-            clean_message = "Data type changed successfully!"
 
         elif request.form["action"] == "normalize_data":
             cols = request.form.getlist("column")
             for col in cols:
                 df[col] = df[col] / df[col].max()
-            clean_message = "Data normalized successfully!"
 
         # elif request.form["action"] == "convert_categorical":
         #     columns = request.form.getlist("columns")
