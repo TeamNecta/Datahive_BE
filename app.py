@@ -14,11 +14,14 @@ app.secret_key = "mysecretkey"
 
 CORS(
     app,
-    origins=[
-        "http://localhost:3000",
-        "https://datahive.rabil.me",
-        "https://datahive.pages.dev",
-    ],
+    resources={
+        r"/*": {
+            "origins": "*",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "*",
+            "Access-Control-Allow-Methods": "*",
+        }
+    },
 )
 
 
@@ -225,13 +228,11 @@ def analysis():
 
 
     dfJSON = df.to_json()
-    return jsonify(
-        {
-            "data": dfJSON,
-            "cols": list(df.columns),
-            "dict": dict,
-        }
-    )
+    return {
+        "data": dfJSON,
+        "cols": list(df.columns),
+        "dict": _dict,
+    }
 
 if __name__ == "__main__":
     app.run(debug=True)
