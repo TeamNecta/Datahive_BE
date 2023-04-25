@@ -1,3 +1,4 @@
+import json
 from flask import Flask, render_template, request, jsonify
 import pandas as pd
 import numpy as np
@@ -42,13 +43,13 @@ def upload():
         miss_data = miss_data.to_frame()
         miss_data.columns = ["No of Missing Values"]
         cols = list(miss_data.index)
-        dataType = df.dtypes
-        dataType = dataType.to_frame()
-
+        dataType = df.dtypes.apply(lambda x: x.name).to_dict()
+        json_string = json.dumps(dataType)
+        dfJSON = df.to_json()
         return jsonify(
             {
-                "data": df.to_json(),
-                # "dataType": dataType.transpose().to_json(),
+                "data": dfJSON,
+                "dataType": json_string,
                 "cols": cols,
                 "columns": list(df.columns),
             }
@@ -111,24 +112,17 @@ def advance_cleaning():
     miss_data = miss_data.to_frame()
     miss_data.columns = ["No of Missing Values"]
     cols = list(miss_data.index)
-    dataType = df.dtypes
-    dataType = dataType.to_frame()
-    # return render_template(
-    #     "advance_cleaning.html",
-    #     data=df,
-    #     dataType=dataType.transpose(),
-    #     cols=cols,
-    #     columns=list(df.columns),
-    #     clean_message=clean_message,
-    # )
+    dataType = df.dtypes.apply(lambda x: x.name).to_dict()
+    json_string = json.dumps(dataType)
+    dfJSON = df.to_json()
     return jsonify(
-            {
-                "data": df.to_json(),
-                # "dataType": dataType.transpose().to_json(),
-                "cols": cols,
-                "columns": list(df.columns),
-            }
-        )
+        {
+            "data": dfJSON,
+            "dataType": json_string,
+            "cols": cols,
+            "columns": list(df.columns),
+        }
+    )
 
 
 @app.route("/visualization", methods=["GET", "POST"])
@@ -197,15 +191,14 @@ def analysis():
             )
             plt.show()
 
-    return render_template("analysis.html", data=df, cols=list(df.columns), dict=dict)
-    # return jsonify(
-    #         {
-    #             "data": df.to_json(),
-    #             # "dataType": dataType.transpose().to_json(),
-    #             "columns": list(df.columns),
-    #         }
-    #     )
-
+    dfJSON = df.to_json()
+    return jsonify(
+        {
+            "data": dfJSON,
+            "cols": list(df.columns),
+            "dict": dict,
+        }
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)
