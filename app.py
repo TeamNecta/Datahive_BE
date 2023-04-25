@@ -175,7 +175,7 @@ def analysis():
 
         elif request.form["action"] == "MLR":
             lm = LinearRegression()
-            colX = request.form.getlist("Column_X")
+            colX = request.form.getlist("selected_columns[]")
             colY = request.form.getlist("Column_Y")
             X = df[colX]
             Y = df[colY]
