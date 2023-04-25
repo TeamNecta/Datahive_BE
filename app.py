@@ -79,7 +79,7 @@ def upload():
 def advance_cleaning():
     if request.method == "POST":
         df_json = request.form["data"]
-        df = pd.read_json(df_json)
+        df = pd.read_json(json.loads(df_json))
         if request.form["action"] == "replace_missing":
             col = request.form["replace_column"]
             method = request.form["replace_method"]
