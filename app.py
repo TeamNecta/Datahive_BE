@@ -12,7 +12,14 @@ from flask_cors import CORS
 app = Flask(__name__)
 app.secret_key = "mysecretkey"
 
-CORS(app, origins=["http://localhost:3000", "https://datahive.rabil.me"])
+CORS(
+    app,
+    origins=[
+        "http://localhost:3000",
+        "https://datahive.rabil.me",
+        "https://datahive.pages.dev",
+    ],
+)
 
 
 @app.route("/")
@@ -67,9 +74,9 @@ def upload():
 
 @app.route("/advance_cleaning", methods=["GET", "POST"])
 def advance_cleaning():
-    global df
-    clean_message = None
     if request.method == "POST":
+        df_json = request.form["data"]
+        df = pd.read_json(df_json)
         if request.form["action"] == "replace_missing":
             columns = request.form.getlist("replace_column")
             method = request.form["replace_method"]
@@ -83,20 +90,17 @@ def advance_cleaning():
                 elif method == "deleteRow":
                     df.dropna(subset=[columns[0]], axis=0, inplace=True)
                     df.reset_index(drop=True, inplace=True)
-            clean_message = "Missing values replaced successfully!"
 
         elif request.form["action"] == "change_datatype":
             column = request.form.getlist("column")
             datatype = request.form["datatype"]
             for col in column:
                 df[col] = df[col].astype(datatype)
-            clean_message = "Data type changed successfully!"
 
         elif request.form["action"] == "normalize_data":
             cols = request.form.getlist("column")
             for col in cols:
                 df[col] = df[col] / df[col].max()
-            clean_message = "Data normalized successfully!"
 
         # elif request.form["action"] == "convert_categorical":
         #     columns = request.form.getlist("columns")
@@ -132,8 +136,9 @@ def visualization():
 
 @app.route("/analysis", methods=["GET", "POST"])
 def analysis():
-    global df
-    dict = {}
+    df_json = request.form["data"]
+    df = pd.read_json(df_json)
+    _dict = {}
     if request.method == "POST":
         if request.form["action"] == "check_correlation":
             col = request.form.get("target_column")
@@ -141,7 +146,7 @@ def analysis():
             numeric_cols.remove(col)
             for keys in numeric_cols:
                 pearson_coef, p_value = stats.pearsonr(df[keys], df[col])
-                dict[keys] = [pearson_coef, p_value]
+                _dict[keys] = [pearson_coef, p_value]
 
         elif request.form["action"] == "SLR":
             lm = LinearRegression()
