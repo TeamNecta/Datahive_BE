@@ -50,8 +50,8 @@ def upload():
         miss_data = miss_data.to_frame()
         miss_data.columns = ["No of Missing Values"]
         cols = list(miss_data.index)
-        dataType = df.dtypes.apply(lambda x: x.name).to_dict()
-        json_string = json.dumps(dataType)
+        dataType = df.dtypes.apply(lambda x: x.name)
+        json_string = json.dumps(dataType.to_dict())
         dfJSON = df.to_json()
         return jsonify(
             {
@@ -61,7 +61,7 @@ def upload():
                 "columns": list(df.columns),
                 "table": df.to_html(),
                 "filename": file.filename,
-                "datatype_table": json_string,
+                "datatype_table": df.dtypes.to_frame().to_html()
             }
         )
 
