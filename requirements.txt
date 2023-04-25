@@ -18,3 +18,4 @@ tzdata==2023.3
 Werkzeug==2.2.3
 zipp==3.15.0
 gunicorn
+Flask-Cors
