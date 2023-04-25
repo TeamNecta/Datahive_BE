@@ -6,10 +6,12 @@ from sklearn.linear_model import LinearRegression
 import seaborn as sns
 from scipy import stats
 from sklearn.metrics import mean_squared_error
-
+from flask_cors import CORS
 
 app = Flask(__name__)
 app.secret_key = "mysecretkey"
+
+CORS(app)
 
 
 @app.route("/")
@@ -131,31 +133,32 @@ def advance_cleaning():
 
 @app.route("/visualization", methods=["GET", "POST"])
 def visualization():
-    return render_template('visualize.html')
+    return render_template("visualize.html")
 
-@app.route('/analysis', methods=['GET', 'POST'])
+
+@app.route("/analysis", methods=["GET", "POST"])
 def analysis():
     global df
-    dict={}
+    dict = {}
     if request.method == "POST":
         if request.form["action"] == "check_correlation":
             col = request.form.get("target_column")
-            numeric_cols = df.select_dtypes(include='number').columns.tolist()
+            numeric_cols = df.select_dtypes(include="number").columns.tolist()
             numeric_cols.remove(col)
             for keys in numeric_cols:
                 pearson_coef, p_value = stats.pearsonr(df[keys], df[col])
                 dict[keys] = [pearson_coef, p_value]
-        
+
         elif request.form["action"] == "SLR":
             lm = LinearRegression()
             colX = request.form.getlist("Column_X")
             colY = request.form.getlist("Column_Y")
             X = df[colX]
             Y = df[colY]
-            lm.fit(X,Y)
+            lm.fit(X, Y)
             R2 = lm.score(X, Y)
             print(R2)
-            Yhat=lm.predict(X)
+            Yhat = lm.predict(X)
             MSE = mean_squared_error(df[colX], Yhat)
             print(MSE)
 
@@ -165,7 +168,9 @@ def analysis():
             plt.figure(figsize=(width, height))
             # sns.residplot(x=df[colX], y=df[colY], data=df)
             sns.regplot(x=colX[0], y=colY[0], data=df)
-            plt.ylim(0,)
+            plt.ylim(
+                0,
+            )
             plt.show()
 
         elif request.form["action"] == "MLR":
@@ -174,10 +179,10 @@ def analysis():
             colY = request.form.getlist("Column_Y")
             X = df[colX]
             Y = df[colY]
-            lm.fit(X,Y)
+            lm.fit(X, Y)
             R2 = lm.score(X, Y)
             print(R2)
-            Yhat=lm.predict(X)
+            Yhat = lm.predict(X)
             MSE = mean_squared_error(df[colX], Yhat)
             print(MSE)
 
@@ -187,16 +192,12 @@ def analysis():
             plt.figure(figsize=(width, height))
             # sns.residplot(x=df[colX], y=df[colY], data=df)
             sns.regplot(x=colX[0], y=colY[0], data=df)
-            plt.ylim(0,)
+            plt.ylim(
+                0,
+            )
             plt.show()
 
-
-    return render_template(
-        "analysis.html",
-        data=df,
-        cols=list(df.columns),
-        dict=dict
-    )
+    return render_template("analysis.html", data=df, cols=list(df.columns), dict=dict)
     # return jsonify(
     #         {
     #             "data": df.to_json(),
@@ -204,6 +205,7 @@ def analysis():
     #             "columns": list(df.columns),
     #         }
     #     )
+
 
 if __name__ == "__main__":
     app.run(debug=True)
