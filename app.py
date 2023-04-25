@@ -47,6 +47,14 @@ def upload():
             }
         )
 
+        # return render_template(
+        #     "advance_cleaning.html",
+        #     data=df,
+        #     dataType=dataType.transpose(),
+        #     cols=cols,
+        #     columns=list(df.columns),
+        # )
+
 
 @app.route("/advance_cleaning", methods=["GET", "POST"])
 def advance_cleaning():
