@@ -58,6 +58,7 @@ def upload():
                 "dataType": json_string,
                 "cols": cols,
                 "columns": list(df.columns),
+                "table": df.to_html(),
             }
         )
 
