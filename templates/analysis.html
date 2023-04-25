@@ -47,11 +47,10 @@
   <form action="/analysis" method="POST">
     <h2>Multiple Linear Regression</h2>
     <label>Select Column X</label>
-    <select name="Column_X">
-      {% for col in cols %}
-      <option value="{{col}}">{{col}}</option>
-      {% endfor %}
-    </select>
+    {% for col in cols %}
+    <input type="checkbox" name="selected_columns[]" value="{{ col }}">
+    <label>{{ col }}</label><br>
+    {% endfor %}
     <br /><br />
     <label>Select Column Y</label>
     <select name="Column_Y">

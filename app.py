@@ -156,7 +156,7 @@ def analysis():
             R2 = lm.score(X, Y)
             print(R2)
             Yhat=lm.predict(X)
-            MSE = mean_squared_error(df[colX], Yhat)
+            MSE = mean_squared_error(df[colY], Yhat)
             print(MSE)
 
             Yhat[0:5]
@@ -170,7 +170,7 @@ def analysis():
 
         elif request.form["action"] == "MLR":
             lm = LinearRegression()
-            colX = request.form.getlist("Column_X")
+            colX = request.form.getlist("selected_columns[]")
             colY = request.form.getlist("Column_Y")
             X = df[colX]
             Y = df[colY]
@@ -178,7 +178,7 @@ def analysis():
             R2 = lm.score(X, Y)
             print(R2)
             Yhat=lm.predict(X)
-            MSE = mean_squared_error(df[colX], Yhat)
+            MSE = mean_squared_error(df[colY], Yhat)
             print(MSE)
 
             Yhat[0:5]
