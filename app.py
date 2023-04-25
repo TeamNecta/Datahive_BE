@@ -148,20 +148,45 @@ def analysis():
         
         elif request.form["action"] == "SLR":
             lm = LinearRegression()
-            columns = request.form.getlist("columnX")
-            col = request.form.get("target_column")
-            X = df[columns]
-            Y = df[col]
+            colX = request.form.getlist("Column_X")
+            colY = request.form.getlist("Column_Y")
+            X = df[colX]
+            Y = df[colY]
             lm.fit(X,Y)
             R2 = lm.score(X, Y)
-            MSE = mean_squared_error(df[col], Yhat)
+            print(R2)
             Yhat=lm.predict(X)
-            
+            MSE = mean_squared_error(df[colX], Yhat)
+            print(MSE)
+
             Yhat[0:5]
             width = 12
             height = 10
             plt.figure(figsize=(width, height))
-            sns.regplot(x=columns, y=col, data=df)
+            # sns.residplot(x=df[colX], y=df[colY], data=df)
+            sns.regplot(x=colX[0], y=colY[0], data=df)
+            plt.ylim(0,)
+            plt.show()
+
+        elif request.form["action"] == "MLR":
+            lm = LinearRegression()
+            colX = request.form.getlist("Column_X")
+            colY = request.form.getlist("Column_Y")
+            X = df[colX]
+            Y = df[colY]
+            lm.fit(X,Y)
+            R2 = lm.score(X, Y)
+            print(R2)
+            Yhat=lm.predict(X)
+            MSE = mean_squared_error(df[colX], Yhat)
+            print(MSE)
+
+            Yhat[0:5]
+            width = 12
+            height = 10
+            plt.figure(figsize=(width, height))
+            # sns.residplot(x=df[colX], y=df[colY], data=df)
+            sns.regplot(x=colX[0], y=colY[0], data=df)
             plt.ylim(0,)
             plt.show()
 
