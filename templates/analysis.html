@@ -63,6 +63,20 @@
     <br /><br />
   </form>
 
+  <!-- <form method="POST" action="/analysis">
+    {% for column, dtype in columns.items() - [col] %}
+    <label for="{{ column }}">{{ column }}</label>
+    {% if dtype == "int64" or dtype == "float64" %}
+    <input type="number" name="{{ column }}" id="{{ column }}">
+    {% elif dtype == "datetime64[ns]" %}
+    <input type="date" name="{{ column }}" id="{{ column }}">
+    {% else %}
+    <input type="text" name="{{ column }}" id="{{ column }}">
+    {% endif %}
+    {% endfor %}
+    <input type="submit" name="action" value="Predict">
+  </form> -->
+
 
 
 </body>

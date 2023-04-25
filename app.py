@@ -8,6 +8,7 @@ import seaborn as sns
 from scipy import stats
 from sklearn.metrics import mean_squared_error
 from flask_cors import CORS
+from sklearn.model_selection import train_test_split
 
 app = Flask(__name__)
 app.secret_key = "mysecretkey"
@@ -195,6 +196,31 @@ def analysis():
                 0,
             )
             plt.show()
+
+        # elif request.form["action"] == "Predict":
+        #     col = request.form.get("target_column")
+        #     model = LinearRegression()
+        #     y_data = df[col]
+        #     x_data = df.drop(col, axis=1 )
+        #     x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, test_size=0.10, random_state=1)
+
+        #     print("number of test samples :", x_test.shape[0])
+        #     print("number of training samples:",x_train.shape[0])
+
+        #     model.fit(x_train, y_train)
+        #     y_pred = model.predict(x_test)
+            
+        #     input_values = {}
+        #     for column in x_data.columns:
+        #         input_values[column] = request.form['column']
+
+        #     input_values = input_values.to_frame()
+
+        #     price = model.predict(input_values)[0]
+        #     print("Predicted price for new instance:", price)
+
+            
+
 
     dfJSON = df.to_json()
     return jsonify(
