@@ -15,9 +15,13 @@
         <option value="{{col}}">{{col}}</option>
         {% endfor %}
       </select>
-      <br><br>
-      <input type="submit" name="action" value="correlation" />
+      <br /><br />
+
+      <input type="submit" name="action" value="check_correlation" />
       <br /><br />
     </form>
+    {% for k, v in dict.values%}
+    <p>The Pearson Correlation Coefficient with {{k}} is {{v}}</p>
+    {% endfor %}
   </body>
 </html>
