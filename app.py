@@ -43,22 +43,22 @@ def upload():
         dataType = df.dtypes
         dataType = dataType.to_frame()
 
-        return jsonify(
-            {
-                "data": df.to_json(),
-                # "dataType": dataType.transpose().to_json(),
-                "cols": cols,
-                "columns": list(df.columns),
-            }
-        )
-
-        # return render_template(
-        #     "advance_cleaning.html",
-        #     data=df,
-        #     dataType=dataType.transpose(),
-        #     cols=cols,
-        #     columns=list(df.columns),
+        # return jsonify(
+        #     {
+        #         "data": df.to_json(),
+        #         # "dataType": dataType.transpose().to_json(),
+        #         "cols": cols,
+        #         "columns": list(df.columns),
+        #     }
         # )
+
+        return render_template(
+            "advance_cleaning.html",
+            data=df,
+            dataType=dataType.transpose(),
+            cols=cols,
+            columns=list(df.columns),
+        )
 
 
 @app.route("/advance_cleaning", methods=["GET", "POST"])
@@ -110,22 +110,22 @@ def advance_cleaning():
     cols = list(miss_data.index)
     dataType = df.dtypes
     dataType = dataType.to_frame()
-    # return render_template(
-    #     "advance_cleaning.html",
-    #     data=df,
-    #     # dataType=dataType.transpose(),
-    #     cols=cols,
-    #     columns=list(df.columns),
-    #     clean_message=clean_message,
-    # )
-    return jsonify(
-            {
-                "data": df.to_json(),
-                # "dataType": dataType.transpose().to_json(),
-                "cols": cols,
-                "columns": list(df.columns),
-            }
-        )
+    return render_template(
+        "advance_cleaning.html",
+        data=df,
+        dataType=dataType.transpose(),
+        cols=cols,
+        columns=list(df.columns),
+        clean_message=clean_message,
+    )
+    # return jsonify(
+    #         {
+    #             "data": df.to_json(),
+    #             # "dataType": dataType.transpose().to_json(),
+    #             "cols": cols,
+    #             "columns": list(df.columns),
+    #         }
+    #     )
 
 
 @app.route("/visualization", methods=["GET", "POST"])
@@ -135,15 +135,15 @@ def visualization():
 @app.route('/analysis', methods=['GET', 'POST'])
 def analysis():
     global df
-    dict ={}
+    dict={}
     if request.method == "POST":
         if request.form["action"] == "check_correlation":
             col = request.form.get("target_column")
-            for key,val in df.items():
-                if key == col:
-                    break
-                pearson_coef, p_value = stats.pearsonr(df['key'], df['col'])
-                dict[key] = p_value
+            numeric_cols = df.select_dtypes(include='number').columns.tolist()
+            numeric_cols.remove(col)
+            for keys in numeric_cols:
+                pearson_coef, p_value = stats.pearsonr(df[keys], df[col])
+                dict[keys] = [pearson_coef, p_value]
         
         elif request.form["action"] == "SLR":
             lm = LinearRegression()
@@ -165,19 +165,19 @@ def analysis():
             plt.show()
 
 
-    # return render_template(
-    #     "analysis.html",
-    #     data=df,
-    #     # dataType=dataType.transpose(),
-    #     cols=list(df.columns),
-    # )
-    return jsonify(
-            {
-                "data": df.to_json(),
-                # "dataType": dataType.transpose().to_json(),
-                "columns": list(df.columns),
-            }
-        )
+    return render_template(
+        "analysis.html",
+        data=df,
+        cols=list(df.columns),
+        dict=dict
+    )
+    # return jsonify(
+    #         {
+    #             "data": df.to_json(),
+    #             # "dataType": dataType.transpose().to_json(),
+    #             "columns": list(df.columns),
+    #         }
+    #     )
 
 if __name__ == "__main__":
     app.run(debug=True)

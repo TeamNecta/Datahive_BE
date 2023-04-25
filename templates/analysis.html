@@ -1,27 +1,28 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Analysis</title>
-  </head>
 
-  <body>
-    <h1>Analysis of data</h1>
+<head>
+  <title>Analysis</title>
+</head>
 
-    <form action="/analysis" method="POST">
-      <h2>Checking the correlation:</h2>
-      <label>Select target Column:</label>
-      <select name="target_column">
-        {% for col in cols %}
-        <option value="{{col}}">{{col}}</option>
-        {% endfor %}
-      </select>
-      <br /><br />
+<body>
+  <h1>Analysis of data</h1>
 
-      <input type="submit" name="action" value="check_correlation" />
-      <br /><br />
-    </form>
-    {% for k, v in dict.values%}
-    <p>The Pearson Correlation Coefficient with {{k}} is {{v}}</p>
-    {% endfor %}
-  </body>
+  <form action="/analysis" method="POST">
+    <h2>Checking the correlation:</h2>
+    <label>Select target Column:</label>
+    <select name="target_column">
+      {% for col in cols %}
+      <option value="{{col}}">{{col}}</option>
+      {% endfor %}
+    </select>
+    <br /><br />
+    <input type="submit" name="action" value="check_correlation" />
+    <br /><br />
+  </form>
+  {% for key, values in dict.items() %}
+  <p>The Pearson Correlation Coefficient with {{key}} is {{values[0]}} and {{values[1]}}</p>
+  {% endfor %}
+</body>
+
 </html>
