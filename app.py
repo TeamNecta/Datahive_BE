@@ -140,7 +140,7 @@ def visualization():
 @app.route("/analysis", methods=["GET", "POST"])
 def analysis():
     df_json = request.form["data"]
-    df = pd.read_json(df_json)
+    df = pd.read_json(json.loads(df_json))
     _dict = {}
     if request.method == "POST":
         if request.form["action"] == "check_correlation":
