@@ -31,7 +31,6 @@ def home():
 def upload():
     if request.method == "POST":
         file = request.files["file"]
-        global df
         df = pd.read_csv(file)
 
         # Replace '?' and '' with NaN
