@@ -149,6 +149,8 @@ def analysis():
             numeric_cols.remove(col)
             for keys in numeric_cols:
                 pearson_coef, p_value = stats.pearsonr(df[keys], df[col])
+                pearson_coef = round(pearson_coef, 3)
+                p_value = round(p_value, 3)
                 _dict[keys] = [pearson_coef, p_value]
 
         elif request.form["action"] == "SLR":
