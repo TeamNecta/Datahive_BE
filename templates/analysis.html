@@ -23,6 +23,49 @@
   {% for key, values in dict.items() %}
   <p>The Pearson Correlation Coefficient with {{key}} is {{values[0]}} and {{values[1]}}</p>
   {% endfor %}
+
+  <form action="/analysis" method="POST">
+    <h2>Simple Linear Regression</h2>
+    <label>Select Column X</label>
+    <select name="Column_X">
+      {% for col in cols %}
+      <option value="{{col}}">{{col}}</option>
+      {% endfor %}
+    </select>
+    <br /><br />
+    <label>Select Column Y</label>
+    <select name="Column_Y">
+      {% for col in cols %}
+      <option value="{{col}}">{{col}}</option>
+      {% endfor %}
+    </select>
+    <br /><br />
+    <input type="submit" name="action" value="SLR" />
+    <br /><br />
+  </form>
+
+  <form action="/analysis" method="POST">
+    <h2>Multiple Linear Regression</h2>
+    <label>Select Column X</label>
+    <select name="Column_X">
+      {% for col in cols %}
+      <option value="{{col}}">{{col}}</option>
+      {% endfor %}
+    </select>
+    <br /><br />
+    <label>Select Column Y</label>
+    <select name="Column_Y">
+      {% for col in cols %}
+      <option value="{{col}}">{{col}}</option>
+      {% endfor %}
+    </select>
+    <br /><br />
+    <input type="submit" name="action" value="MLR" />
+    <br /><br />
+  </form>
+
+
+
 </body>
 
 </html>
