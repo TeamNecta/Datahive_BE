@@ -92,7 +92,7 @@ def advance_cleaning():
                 freq = df[col].value_counts().idxmax()
                 df[col].replace(np.NaN, freq, inplace=True)
             elif method == "deleteRow":
-                df.dropna(subset=[col[0]], axis=0, inplace=True)
+                df.dropna(subset=[col], axis=0, inplace=True)
                 df.reset_index(drop=True, inplace=True)
 
         elif request.form["action"] == "change_datatype":
