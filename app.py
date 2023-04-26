@@ -83,7 +83,7 @@ def advance_cleaning():
         df_json = request.form["data"]
         df = pd.read_json(json.loads(df_json))
         if request.form["action"] == "replace_missing":
-            columns = request.form["replace_column"]
+            columns = request.form.getlist["replace_column"]
             method = request.form["replace_method"]
             for col in columns:
                 if method == "mean":
